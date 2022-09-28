@@ -100,7 +100,7 @@ local SendReactMessage = function(action, data)
 end
 
 local GetDonationTierFromLicense = function(license)
-	PSRCore.Functions.TriggerCallback("d-character:server:GetDonationTierFromLicense", function(tier)
+	PSRCore.Functions.TriggerCallback("psr-character:server:GetDonationTierFromLicense", function(tier)
 		return tier
 	end, license)
 end
@@ -857,12 +857,12 @@ RegisterNUICallback("continueClicked", function()
 		SendReactMessage("setVisible", false)
 		Wait(100)
 
-		TriggerServerEvent("d-character:server:saveNewCharacter", TempCharacterData)
+		TriggerServerEvent("psr-character:server:saveNewCharacter", TempCharacterData)
 	end
 end)
 
 RegisterNUICallback("deleteCharacter", function(res)
-	TriggerServerEvent("d-character:server:deleteCharacter", res.cid)
+	TriggerServerEvent("psr-character:server:deleteCharacter", res.cid)
 end)
 
 RegisterNUICallback("previewCharacter", function(res)
@@ -895,7 +895,7 @@ RegisterNUICallback("selectCharacter", function(res)
 	SetNuiFocus(false, false)
 
 	TriggerServerEvent(
-		"d-character:server:spawnPlayer",
+		"psr-character:server:spawnPlayer",
 		res.data.citizenid,
 		res.data.skin,
 		res.data.outfit,
@@ -980,7 +980,7 @@ RegisterNUICallback("createNewCharacter", function(res)
 	end
 end)
 
-RegisterNetEvent("d-character:client:reloadSelect", function()
+RegisterNetEvent("psr-character:client:reloadSelect", function()
 	SendReactMessage("resetModals")
 
 	ShowBusyspinnerWithText("Loading your characters")
@@ -988,7 +988,7 @@ RegisterNetEvent("d-character:client:reloadSelect", function()
 	Wait(1500)
 
 	BusyspinnerOff()
-	PSRCore.Functions.TriggerCallback("d-character:server:fetchCharacters", function(characters, licence)
+	PSRCore.Functions.TriggerCallback("psr-character:server:fetchCharacters", function(characters, licence)
 		local PlayerTier = GetDonationTierFromLicense(license) or 0
 		local options = {}
 		if characters and #characters > 0 then
@@ -1198,7 +1198,7 @@ local spawnCampPlayers = function(characters)
 	end
 end
 
-RegisterNetEvent("d-character:client:initCharSelect", function()
+RegisterNetEvent("psr-character:client:initCharSelect", function()
 	-- local newCamera = vector4(3783.4423828125, -873.37963867188, 42.522724151611, 42.613109588623)
 	-- DoScreenFadeOut(500)
 	NetworkSetEntityInvisibleToNetwork(PlayerPedId(), true)
@@ -1229,7 +1229,7 @@ RegisterNetEvent("d-character:client:initCharSelect", function()
 	BusyspinnerOff()
 	Wait(250)
 
-	PSRCore.Functions.TriggerCallback("d-character:server:fetchCharacters", function(characters, licence)
+	PSRCore.Functions.TriggerCallback("psr-character:server:fetchCharacters", function(characters, licence)
 		local PlayerTier = GetDonationTierFromLicense(license) or 0
 		local options = {}
 		if characters and #characters > 0 then
@@ -1298,7 +1298,7 @@ AddEventHandler("onResourceStop", function()
 	DestroyAllCams()
 end)
 
-RegisterNetEvent("d-character:client:loadCharacter", function(player, outfits)
+RegisterNetEvent("psr-character:client:loadCharacter", function(player, outfits)
 	local skin = player.skin
 	local outfit = {}
 	local sex = json.decode(player.charinfo).gender
@@ -1341,7 +1341,7 @@ RegisterNetEvent("d-character:client:loadCharacter", function(player, outfits)
 	local bool = GeneratePlayerModel(PlayerPedId(), CharacterData["Sex"], skin, outfit)
 end)
 
-RegisterNetEvent("d-character:client:spawnPlayer", function(skin, clothing, sex, newPlayer)
+RegisterNetEvent("psr-character:client:spawnPlayer", function(skin, clothing, sex, newPlayer)
 	if type(skin) ~= "table" then
 		skin = json.decode(skin)
 	end
