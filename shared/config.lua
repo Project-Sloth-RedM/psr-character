@@ -1,19 +1,13 @@
 Config = {}
 
--- Config.MaxCharacters = 2
-
+-- You can have a maximum of 4 characters without edits to the client files
 Config.MaxCharacters = {
-	[0] = 2,
+	[0] = 4,
 	[1] = 3,
 	[2] = 4,
-	[3] = 5,
 }
 
--- Config.ClothingStores = {
--- 	vec3(),
--- }
-
-Config.DefaultSpawn = vector4(1417.81, 268.0, 89.61, 144.5)
+-- Config.DefaultSpawn = vector4(1417.81, 268.0, 89.61, 144.5)
 
 Config.SpawnLocations = {
 	["Valentine"] = vector4(-172.52, 636.88, 114.1, 55.0),

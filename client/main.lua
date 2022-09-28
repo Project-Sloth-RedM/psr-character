@@ -937,6 +937,10 @@ RegisterNUICallback("createNewCharacter", function(res)
 					0
 				)
 
+				SetEntityAsMissionEntity(createNextPed)
+				DeletePed(createNextPed)
+				Wait(250)
+
 				createNextPed = characterSpawns[i].ped
 
 				NetworkSetEntityInvisibleToNetwork(characterSpawns[i].ped, true)
@@ -947,7 +951,7 @@ RegisterNUICallback("createNewCharacter", function(res)
 		end
 	end
 
-	currentPed = createNextPed or characterSpawns[2].ped
+	currentPed = createNextPed
 
 	interP = true
 	interpCamera(currentPed)
@@ -961,6 +965,7 @@ RegisterNUICallback("createNewCharacter", function(res)
 		end
 	end
 
+	ClearPedTasksImmediately(currentPed)
 	SetEntityHeading(currentPed, 87.21)
 	PlaySoundFrontend("gender_left", "RDRO_Character_Creator_Sounds", true, 0)
 	-- Wait(2000)
@@ -1057,8 +1062,24 @@ local spawnCampPlayers = function(characters)
 				)
 				characterSpawns[i].cid = characters[i].citizenid
 				NetworkSetEntityInvisibleToNetwork(characterSpawns[i].ped, true)
-				-- fixCharacterValues(characterSpawns[i].ped, "Male")
-				GeneratePlayerModel(characterSpawns[i].ped, sex, skin, outfit)
+
+				if sex == "Female" then
+					SetPedOutfitPreset(characterSpawns[i].ped, 17)
+					Citizen.InvokeNative(0xD710A5007C2AC539, characterSpawns[i].ped, 0x9925C067, 0)
+					Citizen.InvokeNative(0xCC8CA3E88256E58F, characterSpawns[i].ped, 0, 1, 1, 1, 0)
+				else
+					SetPedOutfitPreset(characterSpawns[i].ped, 43)
+				end
+
+				Citizen.InvokeNative(0x77FF8D35EEC6BBC4, characterSpawns[i].ped, 0, 0)
+				Citizen.InvokeNative(0x0BFA1BD465CDFEFD, characterSpawns[i].ped)
+				Citizen.InvokeNative(0xD710A5007C2AC539, characterSpawns[i].ped, 0x1D4C528A, 0)
+				Citizen.InvokeNative(0xD710A5007C2AC539, characterSpawns[i].ped, 0x3F1F01E5, 0)
+				Citizen.InvokeNative(0xD710A5007C2AC539, characterSpawns[i].ped, 0xDA0E2C55, 0)
+				Citizen.InvokeNative(0x704C908E9C405136, characterSpawns[i].ped)
+				Citizen.InvokeNative(0xCC8CA3E88256E58F, characterSpawns[i].ped, 0, 1, 1, 1, 0)
+
+				local bool = GeneratePlayerModel(characterSpawns[i].ped, sex, skin, outfit)
 				Wait(250)
 				SetEntityAlpha(characterSpawns[i].ped, 200, false)
 				Wait(250)
